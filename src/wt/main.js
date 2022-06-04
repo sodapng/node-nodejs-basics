@@ -1,12 +1,14 @@
 import { cpus } from 'node:os'
 import { resolve } from 'node:path'
-import { cwd } from 'node:process'
 import { Worker } from 'node:worker_threads'
+import getDirname from '../utils/dirname.js'
+
+const __dirname = getDirname(import.meta.url)
 
 export const performCalculations = async () => {
   const workers = []
   const numOfCpus = cpus().length
-  const filename = resolve(cwd(), 'src/wt', 'worker.js')
+  const filename = resolve(__dirname, 'worker.js')
 
   for (let i = 0; i < numOfCpus; i++) {
     const workerData = {
@@ -27,12 +29,10 @@ export const performCalculations = async () => {
 
   const result = await Promise.allSettled(workers)
 
-  return result.map(({ status, value }) => {
-    return {
-      status: status === 'fulfilled' ? 'resolved' : 'error',
-      data: value ? value : null,
-    }
-  })
+  return result.map(({ value }) => ({
+    status: value ? 'resolved' : 'error',
+    data: value ? value : null,
+  }))
 }
 
 console.log(await performCalculations())

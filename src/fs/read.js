@@ -1,11 +1,14 @@
 import { createReadStream } from 'node:fs'
 import { resolve } from 'node:path'
-import { cwd, stdout } from 'node:process'
+import { stdout } from 'node:process'
 import { pipeline } from 'node:stream/promises'
+import getDirname from '../utils/dirname.js'
+
+const __dirname = getDirname(import.meta.url)
 
 export const read = async () => {
   try {
-    const fileToPath = resolve(cwd(), 'src/fs/files', 'fileToRead.txt')
+    const fileToPath = resolve(__dirname, 'files', 'fileToRead.txt')
     const rs = createReadStream(fileToPath, {
       encoding: 'utf8',
     })

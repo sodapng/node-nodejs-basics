@@ -1,17 +1,24 @@
 import { env } from 'process'
 
 export const parseEnv = () => {
+  return Object.entries(env)
+    .reduce(
+      (acc, [key, value]) =>
+        /^RSS_/.test(key) ? acc.push(`${key}=${value}`) && acc : acc,
+      []
+    )
+    .join('; ')
+
+  // A better solution :D
+  // let result = ''
+
   // for (const key in env) {
   //   if (key.startsWith('RSS_')) {
-  //     console.log(`${key}=${env[key]};`)
+  //     result += `${key}=${env[key]}; `
   //   }
   // }
 
-  return Object.entries(env)
-    .reduce((acc, [key, value]) => {
-      return key.startsWith('RSS_') ? acc.push(`${key}=${value}`) && acc : acc
-    }, [])
-    .join('; ')
+  // return result.replace(/; $/, '')
 }
 
 console.log(parseEnv())

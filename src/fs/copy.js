@@ -1,11 +1,13 @@
 import { cp } from 'node:fs/promises'
 import { resolve } from 'path'
-import { cwd } from 'process'
+import getDirname from '../utils/dirname.js'
+
+const __dirname = getDirname(import.meta.url)
 
 export const copy = async () => {
   try {
-    const folderToPath = resolve(cwd(), 'src/fs', 'files')
-    const folderFromPath = resolve(cwd(), 'src/fs', 'files_copy')
+    const folderToPath = resolve(__dirname, 'files')
+    const folderFromPath = resolve(__dirname, 'files_copy')
     await cp(folderToPath, folderFromPath, {
       errorOnExist: true,
       recursive: true,

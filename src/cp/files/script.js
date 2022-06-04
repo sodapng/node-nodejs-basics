@@ -10,3 +10,9 @@ const echoInput = (chunk) => {
 }
 
 process.stdin.on('data', echoInput)
+
+process.on('message', (msg) => {
+  console.log('CHILD got message:', msg)
+})
+
+process.send('Hello, parent process!')

@@ -1,13 +1,27 @@
-import { fork } from 'node:child_process'
-import { resolve } from 'node:path'
-import { argv, cwd, stdin, stdout } from 'node:process'
+import { spawn } from 'node:child_process'
+import { stdin, stdout } from 'node:process'
 
 export const spawnChildProcess = async (args) => {
-  const modulePath = resolve(cwd(), 'src/cp/files', 'script.js')
-  const child = fork(modulePath, args, { silent: true })
+  const subprocess = spawn('node', args, {
+    stdio: ['pipe', 'pipe', 'pipe', 'ipc'],
+  })
 
-  stdin.pipe(child.stdin)
-  child.stdout.pipe(stdout)
+  subprocess.stderr.on('data', (data) => {
+    console.error(`child process stderr: ${data}`)
+  })
+
+  subprocess.on('close', (code) => {
+    console.log(`child process exited with code ${code}`)
+  })
+
+  subprocess.on('message', (msg) => {
+    console.log('PARENT got message:', msg)
+  })
+
+  subprocess.send('Hello, child process!')
+
+  stdin.pipe(subprocess.stdin)
+  subprocess.stdout.pipe(stdout)
 }
 
-spawnChildProcess(argv.slice(2))
+spawnChildProcess(['src/cp/files/script.js', '--propName', 'value'])

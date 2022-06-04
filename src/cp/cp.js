@@ -18,7 +18,10 @@ export const spawnChildProcess = async (args) => {
     console.log('PARENT got message:', msg)
   })
 
-  subprocess.send('Hello, child process!')
+  subprocess.send({
+    message: `Hello, child process! Is that your PID: ${subprocess.pid}?`,
+    pid: subprocess.pid,
+  })
 
   stdin.pipe(subprocess.stdin)
   subprocess.stdout.pipe(stdout)

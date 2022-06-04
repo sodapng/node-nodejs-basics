@@ -12,7 +12,13 @@ const echoInput = (chunk) => {
 process.stdin.on('data', echoInput)
 
 process.on('message', (msg) => {
-  console.log('CHILD got message:', msg)
+  console.log('CHILD got message:', msg.message)
+  process.send('Hello, parent process! Just let me check.')
+  process.send(
+    `${
+      process.pid === msg.pid
+        ? 'PID matches. Well done!'
+        : 'Something went wrong.'
+    }`
+  )
 })
-
-process.send('Hello, parent process!')

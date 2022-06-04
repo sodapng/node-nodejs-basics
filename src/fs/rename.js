@@ -14,11 +14,11 @@ export const rename = async () => {
       existsSync(fileFromPath) ||
       (existsSync(fileToPath) && existsSync(fileFromPath))
     )
-      throw new Error('The file exists')
+      throw new Error('FS operation failed')
 
     await renameFile(fileToPath, fileFromPath)
   } catch (error) {
-    console.error(new Error('FS operation failed'))
+    console.error(error.message)
   }
 }
 

@@ -1,6 +1,7 @@
 import { createHash } from 'node:crypto'
 import { createReadStream } from 'node:fs'
 import { resolve } from 'node:path'
+import { stdout } from 'node:process'
 import { pipeline } from 'node:stream/promises'
 import getDirname from '../utils/dirname.js'
 
@@ -10,6 +11,8 @@ export const calculateHash = async () => {
   const fileToPath = resolve(__dirname, 'files', 'fileToCalculateHashFor.txt')
   const rs = createReadStream(fileToPath)
   const hash = createHash('sha256')
+
+  // await pipeline(rs, hash.setEncoding('hex'), stdout)
 
   return new Promise(async (resolve, reject) => {
     // rs.on('error', (err) => reject(err))

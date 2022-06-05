@@ -9,7 +9,7 @@ export const list = async () => {
   try {
     const folderToPath = resolve(__dirname, 'files')
 
-    if (!(await isExists(fileToPath))) throw new Error('FS operation failed')
+    if (!(await isExists(folderToPath))) throw new Error('FS operation failed')
 
     const files = await readdir(folderToPath)
     console.log(files)

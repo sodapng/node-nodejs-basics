@@ -10,13 +10,10 @@ export const copy = async () => {
     const folderToPath = resolve(__dirname, 'files')
     const folderFromPath = resolve(__dirname, 'files_copy')
 
-    if (!(await isExists(folderToPath)) || !(await isExists(folderFromPath)))
-      throw new Error('FS operation failed')
+    if (!(await isExists(folderToPath))) throw new Error('FS operation failed')
 
     await cp(folderToPath, folderFromPath, {
-      errorOnExist: true,
       recursive: true,
-      force: false,
     })
   } catch (error) {
     console.error(error.message)

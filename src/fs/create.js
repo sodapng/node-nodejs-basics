@@ -7,11 +7,11 @@ const __dirname = getDirname(import.meta.url)
 
 export const create = async () => {
   try {
-    const fileToPath = resolve(__dirname, 'files', 'fresh.txt')
+    const fileFromPath = resolve(__dirname, 'files', 'fresh.txt')
 
-    if (!(await isExists(fileToPath))) throw new Error('FS operation failed')
+    if (await isExists(fileFromPath)) throw new Error('FS operation failed')
 
-    await writeFile(fileToPath, 'I am fresh and young', {
+    await writeFile(fileFromPath, 'I am fresh and young', {
       flag: 'wx',
     })
   } catch (error) {

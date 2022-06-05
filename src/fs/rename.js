@@ -10,10 +10,7 @@ export const rename = async () => {
     const fileToPath = resolve(__dirname, 'files', 'wrongFilename.txt')
     const fileFromPath = resolve(__dirname, 'files', 'properFilename.md')
 
-    if (
-      existsSync(fileFromPath) ||
-      (existsSync(fileToPath) && existsSync(fileFromPath))
-    )
+    if (!existsSync(fileToPath) || existsSync(fileFromPath))
       throw new Error('FS operation failed')
 
     await renameFile(fileToPath, fileFromPath)
